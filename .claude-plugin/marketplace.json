@@ -1,0 +1,31 @@
+{
+  "name": "starbridge",
+  "owner": {
+    "name": "Starbridge",
+    "url": "https://starbridge.ai"
+  },
+  "metadata": {
+    "description": "Starbridge plugins for Claude Code: the OAuth MCP server and GTM skills for buyer research and outbound."
+  },
+  "plugins": [
+    {
+      "name": "starbridge-mcp",
+      "source": "./",
+      "description": "Starbridge OAuth MCP server plus GTM skills (buyer identification, attributes, summary, contact search, document research, outbound email).",
+      "version": "1.0.0",
+      "author": {
+        "name": "Starbridge",
+        "url": "https://starbridge.ai"
+      },
+      "homepage": "https://github.com/starbridge-ai/starbridge-mcp-plugin",
+      "category": "productivity",
+      "keywords": [
+        "starbridge",
+        "mcp",
+        "oauth",
+        "sales",
+        "gtm"
+      ]
+    }
+  ]
+}
