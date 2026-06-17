@@ -6,7 +6,7 @@ skills so Claude knows how to drive the tools for buyer research and outbound.
 
 - **MCP server:** `https://dashboard.starbridge.ai/mcp/oauth` (HTTP transport, OAuth 2.0)
 - **Skills:** buyer identification, buyer attributes, buyer summary, contact search, document
-  research, outbound email
+  research, outbound email, bridges & sequences, buyer signals, bulk-request scoping
 
 ## Install
 
@@ -53,6 +53,10 @@ Tools are exposed under the `starbridge` namespace (e.g. `mcp__starbridge__searc
 | `researchBuyerFiles` / `viewFileContents` | Internal documents (RFPs, board meetings, procurement) |
 | `getOpportunityLineItems` | Line items from contracts / purchase orders |
 | `runBuyerWebResearch` | Buyer-scoped public web research |
+| `listBridges` / `getBridge` / `getBridgeColumnMetadata` / `listBridgeRows` | Read the user's saved Bridges, their column definitions, and rows |
+| `setBridgeRowStatus` | Update a single Bridge row's status (the one write tool) |
+| `listSequences` / `getSequence` / `getSequenceDataAttributes` / `listSourceBridgeColumnsForSequence` | Inspect outreach Sequences and the bridge↔sequence merge-field link |
+| `listRecentBuyerSignals` / `listTopRecentSubscribedSignals` | Recent signals for one buyer, or across followed buyers |
 
 The live server may expose additional tools; run `/mcp` to see the full list once connected.
 
@@ -72,6 +76,9 @@ intentionally hidden from the `/` menu (`user-invocable: false` in each `SKILL.m
 | `contact-search` | Find contacts; prerequisite for outbound email |
 | `document-research` | RFPs, board minutes, procurement, contracts, web research |
 | `general-outbound-email` | Draft a personalized B2B outbound email |
+| `bridges-and-sequences` | Navigate/analyze the user's own Bridges & Sequences (workspace data, not a buyer) |
+| `buyer-signals` | "What's new about X" (per-buyer) and "daily leads" (cross-buyer) from the signal feed |
+| `bulk-request-scoping` | Steer Clay-style bulk-enrichment asks — narrow, sample, or hand off before grinding |
 
 ## Layout
 
@@ -90,3 +97,7 @@ starbridge-mcp-plugin/
 The skills are mirrored from `service.fastmcp`. To refresh them after upstream changes, re-copy the
 contents of `src/service_fastmcp/resources/skills/*/SKILL.md` into `skills/`, bump the `version` in
 `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`, and run `claude plugin validate .`.
+
+> **Note:** `bridges-and-sequences`, `buyer-signals`, and `bulk-request-scoping` were authored in the
+> plugin first. They should be upstreamed into `service.fastmcp/src/service_fastmcp/resources/skills/`
+> so the dashboard MCP (web / Cowork) serves them too — until then they only ship to Claude Code.
