@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__starbridge__unlockBuyerContact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/confirm-unlock.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__starbridge__setBridgeRowStatus",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/confirm-write.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
