@@ -1,6 +1,8 @@
 ---
 name: buyer-attributes
-description: Retrieve pre-computed scores and metrics about a buyer (AI adoption, startup friendliness, propensity to spend, procurement difficulty, budget, enrollment). For education buyers also covers SIS/LMS systems.
+user-invocable: false
+description: "Look up pre-computed, structured scores and metrics for an identified buyer — AI-adoption, startup-friendliness, propensity-to-spend, and procurement-difficulty scores; operating budget, IT spend, population or enrollment; and for education buyers the SIS, LMS, and CRM systems."
+when_to_use: "Use for a quick lookup of one standardized data point about a buyer. Example triggers — 'what is their AI adoption score', 'how big is their budget', 'what SIS does this district use', 'are they startup friendly', 'how hard are they to sell to'. Choose this over document-research when the answer is one of these standardized fields. For a narrative 'what do we know / what are their priorities' overview use buyer-summary; for evidence from RFPs, contracts, or meeting minutes use document-research. Run buyer-identification first if the buyer id is unknown."
 ---
 
 # Buyer Attributes

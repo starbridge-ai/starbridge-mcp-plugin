@@ -1,6 +1,8 @@
 ---
 name: buyer-identification
-description: Identify which buyer (institution) the user is asking about by searching the buyer database. Use as the first step whenever a question involves a specific institution, school, district, agency, or organization.
+user-invocable: false
+description: "Resolve which buyer (institution — school district, college, university, city, county, state agency, hospital, or other organization) a request refers to, and get its Starbridge buyer id. Required FIRST step before any other Starbridge buyer lookup."
+when_to_use: "Run whenever a request names or implies a specific institution and you do not already have its buyer id, before buyer-attributes, buyer-summary, contact-search, or document-research. Example triggers — 'how much has Lincoln Public Schools spent', 'tell me about UCLA', 'who is the CIO at Mesa County', 'find RFPs from the city of Austin', or a follow-up using 'they', 'them', or 'that district'. Skip only when the buyer id is already known from earlier in the conversation."
 ---
 
 # Buyer Identification

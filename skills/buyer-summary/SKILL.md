@@ -1,6 +1,8 @@
 ---
 name: buyer-summary
-description: Summarize a buyer's tracked activity into current priorities, momentum, risks, opportunities, and outreach-ready context grounded in Starbridge data. Use for strategy, talking points, call prep, and "what do we know" questions.
+user-invocable: false
+description: "Get a synthesized narrative of a buyer's tracked activity — current priorities, momentum, risks, opportunities, and outreach-ready talking points grounded in Starbridge data."
+when_to_use: "Use as the default grounding layer for strategy, call prep, and 'what do we know about them' questions. Example triggers — 'what are their priorities', 'give me talking points for X', 'help me prep for a call with this district', 'what is going on with them', 'how should I approach them'. Prefer this before document-research for strategy and outreach framing. Use buyer-attributes instead for a single standardized metric, and document-research when the user needs underlying evidence, exact procurement details, or verification. Run buyer-identification first if the buyer id is unknown."
 ---
 
 # Buyer Summary
