@@ -1,92 +1,71 @@
-# Starbridge MCP plugin for Claude Code
+# Starbridge for Claude Code
 
-A [Claude Code plugin](https://code.claude.com/docs/en/plugins) that connects Claude Code to the
-**Starbridge dashboard** through its OAuth-protected MCP server, and bundles the Starbridge GTM
-skills so Claude knows how to drive the tools for buyer research and outbound.
+Connect Claude Code to your Starbridge account and work with your buyer data by asking in plain
+language — research institutions, find contacts, draft outreach, and dig into your own bridges,
+sequences, and signals. No commands to memorize: just ask, and Claude picks the right Starbridge
+tools for you.
 
-- **MCP server:** `https://dashboard.starbridge.ai/mcp/oauth` (HTTP transport, OAuth 2.0)
-- **Skills:** buyer identification, buyer attributes, buyer summary, contact search, document
-  research, outbound email
+## Get started
 
-## Install
-
-This repository is both a Claude Code **plugin** and a single-plugin **marketplace**, so you can
-install it directly from GitHub:
+**1. Install** (run these in Claude Code):
 
 ```text
 /plugin marketplace add starbridge-ai/starbridge-mcp-plugin
 /plugin install starbridge-mcp@starbridge
 ```
 
-Then authenticate the MCP server (opens a browser for the Starbridge OAuth flow):
+**2. Connect your account:**
 
 ```text
 /mcp
 ```
 
-Pick **starbridge** and follow the login prompt. Claude Code performs OAuth 2.0 dynamic client
-registration + PKCE automatically against `https://auth.starbridge.ai`; you only need to approve in
-the browser. When a session expires, run `/mcp` again and reconnect to re-authorize.
+Pick **starbridge** and log in when the browser opens. That's it — you're connected. If your session
+ever expires, run `/mcp` again and reconnect.
 
-### Try it locally first
+## What you can ask
 
-To test without installing from the marketplace, point Claude Code at the checked-out directory:
+Talk to it the way you'd brief a teammate. A few examples by what you're trying to do:
 
-```bash
-claude --plugin-dir /path/to/starbridge-mcp-plugin
-```
+**Get up to speed on a buyer**
+- "What are the top priorities for Lincoln Public Schools?"
+- "What's their AI-adoption score, budget, and enrollment?"
+- "What SIS does this district use?"
+- "Help me prep for a call with Mesa County."
 
-Run `/reload-plugins` after editing any plugin file.
+**Dig into documents, history, and spend**
+- "What has the City of Austin purchased recently, and from whom?"
+- "Find their open RFPs."
+- "Does this district have a contract with <vendor>? When does it expire?"
+- "What did the board discuss about <topic>?"
 
-## What you get
+**Find the right people**
+- "Who is the CIO at UCLA?"
+- "Find procurement and IT contacts at this district."
 
-### MCP server
+**Draft outreach**
+- "Draft a cold email to the superintendent about <your offering>."
 
-Tools are exposed under the `starbridge` namespace (e.g. `mcp__starbridge__searchBuyers`):
+**Stay on top of what's changing**
+- "What's new about Washoe County School District?"
+- "Give me my daily leads — what's new across the buyers I follow?"
 
-| Tool | Purpose |
-| --- | --- |
-| `searchBuyers` | Find a buyer (institution) by name |
-| `getBuyerAttribute` | Pre-computed scores/metrics for a buyer |
-| `getBuyerSummary` | Synthesized buyer activity, priorities, and outreach context |
-| `searchBuyerContacts` | Verified contacts at a buyer |
-| `researchBuyerFiles` / `viewFileContents` | Internal documents (RFPs, board meetings, procurement) |
-| `getOpportunityLineItems` | Line items from contracts / purchase orders |
-| `runBuyerWebResearch` | Buyer-scoped public web research |
+**Work with your own bridges & sequences**
+- "List my bridges."
+- "Analyze my competitor-presence bridge and show me where they're winning."
+- "What merge fields does this sequence use, and which bridge columns feed it?"
 
-The live server may expose additional tools; run `/mcp` to see the full list once connected.
+Asking for a huge bulk job (e.g. "enrich every row in this list")? Claude will help you scope it
+down — narrow to a subset, run a sample first, or point you to the right tool — rather than grinding
+through hundreds of slow calls.
 
-### Skills
+## Notes
 
-Bundled from
-[`service.fastmcp`](https://github.com/starbridge-ai/service.fastmcp/tree/main/src/service_fastmcp/resources/skills).
-These are **auto-invoked only**: Claude activates them on its own based on the request. They are
-intentionally hidden from the `/` menu (`user-invocable: false` in each `SKILL.md`), so there are no
-`/starbridge-mcp:*` slash commands to remember — just ask naturally.
+- **Read-focused.** This is built for research and enrichment. Creating and editing bridges still
+  happens in the Starbridge app.
+- **You stay in control.** Claude asks before each Starbridge action unless you've set it to
+  auto-approve.
 
-| Skill | When Claude activates it |
-| --- | --- |
-| `buyer-identification` | First step — resolve which buyer the question is about |
-| `buyer-attributes` | Pre-computed scores, budget, enrollment, SIS/LMS |
-| `buyer-summary` | Strategy, priorities, call prep, "what do we know" |
-| `contact-search` | Find contacts; prerequisite for outbound email |
-| `document-research` | RFPs, board minutes, procurement, contracts, web research |
-| `general-outbound-email` | Draft a personalized B2B outbound email |
+---
 
-## Layout
-
-```text
-starbridge-mcp-plugin/
-├── .claude-plugin/
-│   ├── plugin.json        # plugin manifest
-│   └── marketplace.json   # makes this repo installable as a marketplace
-├── .mcp.json              # Starbridge OAuth MCP server (HTTP transport)
-├── skills/                # bundled GTM skills (one SKILL.md per directory)
-└── README.md
-```
-
-## Maintaining the skills
-
-The skills are mirrored from `service.fastmcp`. To refresh them after upstream changes, re-copy the
-contents of `src/service_fastmcp/resources/skills/*/SKILL.md` into `skills/`, bump the `version` in
-`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`, and run `claude plugin validate .`.
+Working on the plugin itself? See [CONTRIBUTING.md](./CONTRIBUTING.md).

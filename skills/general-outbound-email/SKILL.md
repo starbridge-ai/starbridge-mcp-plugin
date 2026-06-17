@@ -17,12 +17,20 @@ Before drafting the email you MUST identify who it should be sent to:
 2. Include ALL key contacts that have an email address in the `to` array. Do not limit to a single recipient — every contact returned with a valid email should be added.
 3. If a particular recipient was asked for by the user, use their contact details to personalize the greeting and body if that contact has an email.
 4. If contact search returns no results or no contacts have an email address, set `to` to an empty array `[]` and use a generic greeting ("Hi there" or "Hi [Title]"). Tell the user you could not find a verified contact and they should fill in the recipient manually.
+5. Only include UNLOCKED contacts in the `to` array — locked contacts usually have a null email and are gated behind the credit-spending `unlockBuyerContact` tool. If the contacts you need are locked and the search response includes `unlockCreditSpendHints`, do NOT auto-unlock: tell the user the contact is locked, state the per-contact cost and remaining balance, and ask them to confirm before unlocking (see `contact-search` for the unlock flow). Draft with a generic greeting meanwhile.
+
+## Ground the Personalization
+
+Before drafting, make sure you actually have buyer context to personalize with — the opener and the pain/outcome must come from real data, not guesses:
+- If real buyer context (priorities, momentum, outreach angles) isn't already in this conversation, activate `buyer-summary`; for recency-driven outreach, activate `buyer-signals` for a dated hook.
+- Build the opening line and the pain/outcome from a specific item in that data and reference it concretely.
+- If neither returns usable context, fall back to title-based relevance and tell the user the email is only lightly personalized.
 
 ## Email Crafting Instructions
 
 Write a short outbound email (under 150 words) that:
 1. Opens with a personalized first line that shows you've done your homework — do NOT use a generic opener like "I hope this finds you well"
-2. Leverages a specific pain or business outcome the prospect likely cares about based on the organization's business context
+2. Leverages a specific pain or business outcome the prospect likely cares about, grounded in the buyer context surfaced by `buyer-summary` / `buyer-signals` (or, if unavailable, the recipient's role)
 3. Introduces your solution in one sentence, leading with value — not features
 4. Closes with a low-friction CTA that feels like an easy "yes"
 5. Uses the user's full name in the signature when available; otherwise leave a placeholder
