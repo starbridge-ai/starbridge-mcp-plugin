@@ -1,5 +1,6 @@
 ---
 name: general-outbound-email
+user-invocable: false
 description: Draft a personalized B2B outbound email for a Business Development Representative. Use whenever the user asks to generate, draft, or write an outbound email. Activate `contact-search` first to identify the recipients.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: contact-search
+user-invocable: false
 description: Find contacts at an institution (staff, executives, board members, department heads). Use for "who is" or "find contacts at" questions, and as the prerequisite step before drafting outbound email.
 ---
 

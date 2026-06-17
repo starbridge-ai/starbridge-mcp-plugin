@@ -1,5 +1,6 @@
 ---
 name: buyer-identification
+user-invocable: false
 description: Identify which buyer (institution) the user is asking about by searching the buyer database. Use as the first step whenever a question involves a specific institution, school, district, agency, or organization.
 ---
 

@@ -60,17 +60,18 @@ The live server may expose additional tools; run `/mcp` to see the full list onc
 
 Bundled from
 [`service.fastmcp`](https://github.com/starbridge-ai/service.fastmcp/tree/main/src/service_fastmcp/resources/skills).
-Claude invokes these automatically based on the request; you can also call them explicitly with
-their namespaced names:
+These are **auto-invoked only**: Claude activates them on its own based on the request. They are
+intentionally hidden from the `/` menu (`user-invocable: false` in each `SKILL.md`), so there are no
+`/starbridge-mcp:*` slash commands to remember — just ask naturally.
 
-| Skill | When it runs |
+| Skill | When Claude activates it |
 | --- | --- |
-| `/starbridge-mcp:buyer-identification` | First step — resolve which buyer the question is about |
-| `/starbridge-mcp:buyer-attributes` | Pre-computed scores, budget, enrollment, SIS/LMS |
-| `/starbridge-mcp:buyer-summary` | Strategy, priorities, call prep, "what do we know" |
-| `/starbridge-mcp:contact-search` | Find contacts; prerequisite for outbound email |
-| `/starbridge-mcp:document-research` | RFPs, board minutes, procurement, contracts, web research |
-| `/starbridge-mcp:general-outbound-email` | Draft a personalized B2B outbound email |
+| `buyer-identification` | First step — resolve which buyer the question is about |
+| `buyer-attributes` | Pre-computed scores, budget, enrollment, SIS/LMS |
+| `buyer-summary` | Strategy, priorities, call prep, "what do we know" |
+| `contact-search` | Find contacts; prerequisite for outbound email |
+| `document-research` | RFPs, board minutes, procurement, contracts, web research |
+| `general-outbound-email` | Draft a personalized B2B outbound email |
 
 ## Layout
 

@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "starbridge-mcp",
   "displayName": "Starbridge",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Connects Claude Code to the Starbridge dashboard over an OAuth MCP server, and bundles GTM skills for buyer identification, buyer attributes, buyer summaries, contact search, document research, and outbound email.",
   "author": {
     "name": "Starbridge",

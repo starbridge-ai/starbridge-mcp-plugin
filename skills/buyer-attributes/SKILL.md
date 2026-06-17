@@ -1,5 +1,6 @@
 ---
 name: buyer-attributes
+user-invocable: false
 description: Retrieve pre-computed scores and metrics about a buyer (AI adoption, startup friendliness, propensity to spend, procurement difficulty, budget, enrollment). For education buyers also covers SIS/LMS systems.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: buyer-summary
+user-invocable: false
 description: Summarize a buyer's tracked activity into current priorities, momentum, risks, opportunities, and outreach-ready context grounded in Starbridge data. Use for strategy, talking points, call prep, and "what do we know" questions.
 ---
 

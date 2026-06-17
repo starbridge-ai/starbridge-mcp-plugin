@@ -1,5 +1,6 @@
 ---
 name: document-research
+user-invocable: false
 description: Search internal documents (RFPs, board meetings, procurement records, contracts) and buyer-scoped web sources for detailed information about a buyer. Use for history, vendors, technology, contracts, and questions structured attributes can't answer.
 ---
 
