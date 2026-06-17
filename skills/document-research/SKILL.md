@@ -1,7 +1,8 @@
 ---
 name: document-research
 user-invocable: false
-description: Search internal documents (RFPs, board meetings, procurement records, contracts) and buyer-scoped web sources for detailed information about a buyer. Use for history, vendors, technology, contracts, and questions structured attributes can't answer.
+description: "Search a buyer's internal documents — RFPs, board-meeting minutes, strategic plans, procurement records, contracts, and line items — plus buyer-scoped web sources, for detailed, evidence-backed answers."
+when_to_use: "Use for history, vendors, technology, contracts, spend detail, and anything needing document evidence rather than a standardized score. Example triggers — 'what have they purchased', 'what vendors do they use', 'find their RFPs', 'what did the board discuss about X', 'do they have a contract with Y', 'what is in their strategic plan'. Use buyer-attributes instead for a single pre-computed metric, and buyer-summary for a high-level narrative. Run buyer-identification first if the buyer id is unknown."
 ---
 
 # Document Research

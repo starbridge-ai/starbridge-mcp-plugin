@@ -1,7 +1,8 @@
 ---
 name: general-outbound-email
 user-invocable: false
-description: Draft a personalized B2B outbound email for a Business Development Representative. Use whenever the user asks to generate, draft, or write an outbound email. Activate `contact-search` first to identify the recipients.
+description: "Draft a personalized, concise B2B cold-outbound email for a BDR, grounded in real buyer and contact data."
+when_to_use: "Use whenever the user asks to write, draft, generate, compose, or rewrite outbound email or cold outreach to a buyer. Example triggers — 'draft an email to X', 'write a cold email to the CIO', 'generate outreach for this district', 'compose a follow-up to them'. Activate contact-search first to find recipients, and buyer-identification before that if the buyer id is unknown."
 ---
 
 # Outbound Email Generation

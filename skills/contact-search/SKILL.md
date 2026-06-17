@@ -1,7 +1,8 @@
 ---
 name: contact-search
 user-invocable: false
-description: Find contacts at an institution (staff, executives, board members, department heads). Use for "who is" or "find contacts at" questions, and as the prerequisite step before drafting outbound email.
+description: "Find people at a buyer institution — staff, executives, board members, department heads — from Starbridge's verified contact database, with an optional public-web fallback."
+when_to_use: "Use for any 'who' or 'find contacts' question, and as the required step before drafting outbound email. Example triggers — 'who is the CIO at X', 'find me contacts at this district', 'who runs IT / procurement / the board', 'get the superintendent', 'who should I reach out to'. Run buyer-identification first if the buyer id is unknown."
 ---
 
 # Contact Search
