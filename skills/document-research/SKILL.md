@@ -19,23 +19,29 @@ Searches internal documents and public web sources for information about a buyer
 ## Tools
 
 ### `researchBuyerFiles`
-Searches internal documents (RFPs, board meetings, procurement data). Returns matching files with summaries and highlights. Procurement records are typically the most reliable source for vendors, technology, and contracts.
+Searches internal documents (RFPs, board meetings, procurement data). Returns matching files with summaries and highlights. Procurement records are typically the most reliable source for vendors, technology, and contracts. This — not the web — is the authoritative first stop for buyer research.
 
 ### `viewFileContents`
-Retrieves full contents of a specific file. Use when summaries aren't sufficient for accurate answers (comparisons, exact quotes, specific numbers).
+Returns token-bounded *excerpts* of one or more files — each file is truncated to roughly its first N tokens of parsed markdown, and later files are dropped if the total response budget is hit. Accepts `fileId` and/or `opportunityId` (pass an `opportunityId` to pull every file on that opportunity). Use when `researchBuyerFiles` highlights aren't enough for an exact quote or number. It is NOT the complete file — if you need the full document, use `getFileDownloadLinks`.
+
+### `getFileDownloadLinks`
+Returns a short-lived (≈1-hour) signed URL to the original file plus a parsed-markdown link, for when the user wants the entire document or the source file itself. The `fileId` is the per-file `id` from `researchBuyerFiles`. The response also includes `contentType` and `originalSizeBytes` (may be null for older files) so you can gauge size before fetching — do not inline multi-megabyte file bytes into your response, and note `markdownLink` can be null when the file isn't yet processed.
 
 ### `getOpportunityLineItems`
 Retrieves line items from contracts or purchase orders. Pass the `opportunityId` (not the file id).
 
 ### `runBuyerWebResearch`
-Returns buyer-scoped web search results as source candidates (URL, title, excerpts) for citation-driven research. Use as a supplement when internal documents don't fully answer the question.
+Internal files (`researchBuyerFiles` + `viewFileContents`) are the authoritative, more reliable source — exhaust them first. Only call `runBuyerWebResearch` when the answer genuinely requires external context that wouldn't appear in RFPs, board minutes, contracts, or strategic plans: recent news, press releases, or third-party coverage. Returns buyer-scoped web results (URL, title, excerpts) as source candidates. For recency/news questions, the `buyer-signals` feed is the preferred first stop.
 
 ## Workflow
 1. For factual questions (vendors, technology, contracts), start with `researchBuyerFiles` — procurement records are the most reliable source
-2. Run `runBuyerWebResearch` in parallel or as a supplement
+2. Only if internal files don't answer the question — and it genuinely needs external/press coverage — call `runBuyerWebResearch`; do not run it in parallel with the first internal search. (For recency/news, prefer the `buyer-signals` feed.)
 3. Review summaries and highlights from search results
-4. Use `viewFileContents` or `getOpportunityLineItems` when full details are needed
+4. Use `viewFileContents` for longer excerpts, `getFileDownloadLinks` for the full source file, or `getOpportunityLineItems` for purchase-order line items, when highlights aren't enough
 5. Synthesize findings into a comprehensive answer
+
+## Starting from an opportunityId
+If you already have an `opportunityId` (e.g. from a Bridge row in the `bridges-and-sequences` skill, or a buyer signal) you do NOT need `researchBuyerFiles` first. Call `viewFileContents` with that `opportunityId` to pull token-bounded excerpts of all files on the opportunity (use `getFileDownloadLinks` if you need the full unbounded file), or `getOpportunityLineItems` with the `opportunityId` for its purchase-order line items.
 
 ## If Initial Search Yields No Results
 Do NOT give up after one search attempt. Try:
@@ -56,7 +62,7 @@ Only respond with "no information found" after exhausting multiple search strate
 
 ## Recency and date filters
 
-"Recent" means something different for each document type, and the date-filter inputs on `researchBuyerFilesPrivate` (`effectiveDateGte` / `effectiveDateLte`) and sort fields (`OpportunityFromDate`, `OpportunityUntilDate`) map to *different underlying dates* depending on the type:
+"Recent" means something different for each document type, and the date-filter inputs on `researchBuyerFiles` (`effectiveDateGte` / `effectiveDateLte`) and sort fields (`OpportunityFromDate`, `OpportunityUntilDate`) map to *different underlying dates* depending on the type:
 
 - **Meetings / strategic plans:** "from date" = when the document was posted; "until date" is not meaningful.
 - **RFPs:** "from date" = posted date; "until date" = due date.
@@ -89,7 +95,13 @@ It's fine to default to a recent window when the user asks for "recent" content;
 - Specific quotes, numbers, or detailed specifications
 - When summaries don't provide enough certainty to answer
 
+Remember `viewFileContents` returns truncated excerpts; when you need the complete document (e.g. to read an entire contract end to end), use `getFileDownloadLinks`.
+
+## Citing files
+- For board-meeting / strategic-plan sources, cite `buyerFiles[].sourceUrl` from `researchBuyerFiles` when present — that is the real citation URL.
+- For other document types (RFPs, contracts, purchase orders) there is no citation URL; refer to the document by a human-readable title (and date/type) instead.
+- Never surface raw file names, UUIDs, or URL-encoded scraped paths (e.g. the `fileName` / `originalName` fields, or a value like `https_www_youtube_com_watch_v_xyz.vtt`) as links or titles — they are not valid URLs and make it look like the document isn't in Starbridge.
+
 ## Tips
 - Search both abbreviated and full forms of acronyms (e.g., "FERPA" and "Family Educational Rights and Privacy Act")
 - Try refined keywords if initial search doesn't yield relevant results
-- Use readable file names in responses, not UUIDs

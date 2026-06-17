@@ -15,14 +15,20 @@ Identifies which buyer (institution) the user is asking about. Use it as the fir
 - Any query that requires knowing which buyer to look up data for
 
 ## Tool: `searchBuyers`
-Searches the buyer database and returns the top matches. Use a single search with the best inferred buyer name — the tool handles fuzzy matching for partial or misspelled names. If the user mentions a state or province, set `buyerStateCode` to the standardized ISO 3166-2 state code.
+Searches the buyer database and returns the top candidates (up to ~10) for you to disambiguate a single named buyer. Use a single search with the best inferred buyer name — the tool handles fuzzy matching for partial or misspelled names. If the user mentions a state or province, set `buyerStateCode` to the matching `StateMapping` enum value (e.g. `California`, **not** `CA` or `US-CA`); the MCP schema lists the valid values and the server resolves them to the ISO 3166-2 code. An unrecognized value is silently ignored and the state filter is dropped, so use the exact enum name.
+
+Matching is by buyer name only (plus the optional `buyerStateCode` filter) — it cannot filter by segment, enrollment, budget, or other attributes, and it is not a list / count / TAM endpoint. For broad "list / count / enrich every buyer matching X" asks, defer to `bulk-request-scoping` rather than improvising a filtered query here.
 
 ## Workflow
 1. Extract the buyer/institution name from the user's message
 2. Call `searchBuyers` with `buyerName` (and `buyerStateCode` when stated)
 3. Evaluate the returned candidates and select the best match
 4. Retain the buyer's `id`, `name`, `url`, and `stateCode` for subsequent tool calls
-5. If no confident match exists, ask the user to clarify which institution they mean
+5. If no candidate is a confident match, do NOT pass a guessed or empty buyer id to downstream tools. Tell the user plainly that no Starbridge buyer matched, echo the name (and state, if any) you searched, and ask which institution they mean — the full name and, if known, which state. When reconciling an external list (e.g. CRM rows), re-run `searchBuyers` with the row's state and corrected name; if there is still no confident match, flag the row as no-match rather than mapping it to a low-confidence buyer.
+
+Once the buyer id is resolved, continue with the skill that matches the question — `buyer-signals` for recent activity, `buyer-summary` for strategy, `buyer-attributes` for a single metric, `document-research` for evidence, and `contact-search` for people.
+
+If the request implies resolving many buyers at once (a pasted list, "all districts in X", a bridge or CRM export), defer to the `bulk-request-scoping` guardrail to bound scope before running per-buyer lookups.
 
 ## Example Clarification Response
 > "I found multiple institutions matching that name. Could you clarify which one you mean?"
