@@ -1,36 +1,78 @@
-# Starbridge MCP plugin for Claude Code
+# Starbridge for Claude Code
 
-A [Claude Code plugin](https://code.claude.com/docs/en/plugins) that connects Claude Code to the
-**Starbridge dashboard** through its OAuth-protected MCP server, and bundles the Starbridge GTM
-skills so Claude knows how to drive the tools for buyer research and outbound.
+Connect Claude Code to your Starbridge account and work with your buyer data by asking in plain
+language — research institutions, find contacts, draft outreach, and dig into your own bridges,
+sequences, and signals. No commands to memorize: just ask, and Claude picks the right Starbridge
+tools for you.
 
-- **MCP server:** `https://dashboard.starbridge.ai/mcp/oauth` (HTTP transport, OAuth 2.0)
-- **Skills:** buyer identification, buyer attributes, buyer summary, contact search, document
-  research, outbound email, bridges & sequences, buyer signals, bulk-request scoping
+## Get started
 
-## Install
-
-This repository is both a Claude Code **plugin** and a single-plugin **marketplace**, so you can
-install it directly from GitHub:
+**1. Install** (run these in Claude Code):
 
 ```text
 /plugin marketplace add starbridge-ai/starbridge-mcp-plugin
 /plugin install starbridge-mcp@starbridge
 ```
 
-Then authenticate the MCP server (opens a browser for the Starbridge OAuth flow):
+**2. Connect your account:**
 
 ```text
 /mcp
 ```
 
-Pick **starbridge** and follow the login prompt. Claude Code performs OAuth 2.0 dynamic client
-registration + PKCE automatically against `https://auth.starbridge.ai`; you only need to approve in
-the browser. When a session expires, run `/mcp` again and reconnect to re-authorize.
+Pick **starbridge** and log in when the browser opens. That's it — you're connected. If your session
+ever expires, run `/mcp` again and reconnect.
 
-### Try it locally first
+## What you can ask
 
-To test without installing from the marketplace, point Claude Code at the checked-out directory:
+Talk to it the way you'd brief a teammate. A few examples by what you're trying to do:
+
+**Get up to speed on a buyer**
+- "What are the top priorities for Lincoln Public Schools?"
+- "What's their AI-adoption score, budget, and enrollment?"
+- "What SIS does this district use?"
+- "Help me prep for a call with Mesa County."
+
+**Dig into documents, history, and spend**
+- "What has the City of Austin purchased recently, and from whom?"
+- "Find their open RFPs."
+- "Does this district have a contract with <vendor>? When does it expire?"
+- "What did the board discuss about <topic>?"
+
+**Find the right people**
+- "Who is the CIO at UCLA?"
+- "Find procurement and IT contacts at this district."
+
+**Draft outreach**
+- "Draft a cold email to the superintendent about <your offering>."
+
+**Stay on top of what's changing**
+- "What's new about Washoe County School District?"
+- "Give me my daily leads — what's new across the buyers I follow?"
+
+**Work with your own bridges & sequences**
+- "List my bridges."
+- "Analyze my competitor-presence bridge and show me where they're winning."
+- "What merge fields does this sequence use, and which bridge columns feed it?"
+
+Asking for a huge bulk job (e.g. "enrich every row in this list")? Claude will help you scope it
+down — narrow to a subset, run a sample first, or point you to the right tool — rather than grinding
+through hundreds of slow calls.
+
+## Notes
+
+- **Read-focused.** This is built for research and enrichment. Creating and editing bridges still
+  happens in the Starbridge app.
+- **You stay in control.** Claude asks before each Starbridge action unless you've set it to
+  auto-approve.
+
+---
+
+## Development
+
+For contributors working on this plugin.
+
+**Test locally without installing from the marketplace:**
 
 ```bash
 claude --plugin-dir /path/to/starbridge-mcp-plugin
@@ -38,49 +80,7 @@ claude --plugin-dir /path/to/starbridge-mcp-plugin
 
 Run `/reload-plugins` after editing any plugin file.
 
-## What you get
-
-### MCP server
-
-Tools are exposed under the `starbridge` namespace (e.g. `mcp__starbridge__searchBuyers`):
-
-| Tool | Purpose |
-| --- | --- |
-| `searchBuyers` | Find a buyer (institution) by name |
-| `getBuyerAttribute` | Pre-computed scores/metrics for a buyer |
-| `getBuyerSummary` | Synthesized buyer activity, priorities, and outreach context |
-| `searchBuyerContacts` | Verified contacts at a buyer |
-| `researchBuyerFiles` / `viewFileContents` | Internal documents (RFPs, board meetings, procurement) |
-| `getOpportunityLineItems` | Line items from contracts / purchase orders |
-| `runBuyerWebResearch` | Buyer-scoped public web research |
-| `listBridges` / `getBridge` / `getBridgeColumnMetadata` / `listBridgeRows` | Read the user's saved Bridges, their column definitions, and rows |
-| `setBridgeRowStatus` | Update a single Bridge row's status (the one write tool) |
-| `listSequences` / `getSequence` / `getSequenceDataAttributes` / `listSourceBridgeColumnsForSequence` | Inspect outreach Sequences and the bridge↔sequence merge-field link |
-| `listRecentBuyerSignals` / `listTopRecentSubscribedSignals` | Recent signals for one buyer, or across followed buyers |
-
-The live server may expose additional tools; run `/mcp` to see the full list once connected.
-
-### Skills
-
-Bundled from
-[`service.fastmcp`](https://github.com/starbridge-ai/service.fastmcp/tree/main/src/service_fastmcp/resources/skills).
-These are **auto-invoked only**: Claude activates them on its own based on the request. They are
-intentionally hidden from the `/` menu (`user-invocable: false` in each `SKILL.md`), so there are no
-`/starbridge-mcp:*` slash commands to remember — just ask naturally.
-
-| Skill | When Claude activates it |
-| --- | --- |
-| `buyer-identification` | First step — resolve which buyer the question is about |
-| `buyer-attributes` | Pre-computed scores, budget, enrollment, SIS/LMS |
-| `buyer-summary` | Strategy, priorities, call prep, "what do we know" |
-| `contact-search` | Find contacts; prerequisite for outbound email |
-| `document-research` | RFPs, board minutes, procurement, contracts, web research |
-| `general-outbound-email` | Draft a personalized B2B outbound email |
-| `bridges-and-sequences` | Navigate/analyze the user's own Bridges & Sequences (workspace data, not a buyer) |
-| `buyer-signals` | "What's new about X" (per-buyer) and "daily leads" (cross-buyer) from the signal feed |
-| `bulk-request-scoping` | Steer Clay-style bulk-enrichment asks — narrow, sample, or hand off before grinding |
-
-## Layout
+**Layout:**
 
 ```text
 starbridge-mcp-plugin/
@@ -92,12 +92,17 @@ starbridge-mcp-plugin/
 └── README.md
 ```
 
-## Maintaining the skills
+The MCP server is `https://dashboard.starbridge.ai/mcp/oauth` (HTTP transport, OAuth 2.0 — Claude
+Code handles dynamic client registration + PKCE against `https://auth.starbridge.ai`). Run `/mcp`
+after connecting to see the live tool list.
 
-The skills are mirrored from `service.fastmcp`. To refresh them after upstream changes, re-copy the
-contents of `src/service_fastmcp/resources/skills/*/SKILL.md` into `skills/`, bump the `version` in
-`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`, and run `claude plugin validate .`.
+**Skills** are auto-invoked only (`user-invocable: false` in each `SKILL.md`), so they don't appear
+in the `/` menu — Claude activates them based on the request. Most are mirrored from
+[`service.fastmcp`](https://github.com/starbridge-ai/service.fastmcp/tree/main/src/service_fastmcp/resources/skills);
+to refresh after upstream changes, re-copy `src/service_fastmcp/resources/skills/*/SKILL.md` into
+`skills/`, bump the `version` in both `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`,
+and run `claude plugin validate .`.
 
-> **Note:** `bridges-and-sequences`, `buyer-signals`, and `bulk-request-scoping` were authored in the
-> plugin first. They should be upstreamed into `service.fastmcp/src/service_fastmcp/resources/skills/`
-> so the dashboard MCP (web / Cowork) serves them too — until then they only ship to Claude Code.
+> `bridges-and-sequences`, `buyer-signals`, and `bulk-request-scoping` were authored here first and
+> should be upstreamed into `service.fastmcp` so the dashboard MCP (web / Cowork) serves them too —
+> until then they ship only to Claude Code.
