@@ -1,20 +1,19 @@
 ---
-name: bridges-and-sequences
+name: bridges
 user-invocable: false
-description: "Navigate, read, and analyze the user's own Starbridge Bridges (saved tables of matches) and outreach Sequences — list them, inspect column definitions and rows, run analysis or visualization over the data, follow the bridge↔sequence merge-field link, and update a single row's status."
-when_to_use: "Use when the request is about the user's OWN saved Bridges or Sequences rather than one external institution. Example triggers — 'list my bridges', 'what's in my <X> bridge', 'analyze / visualize this bridge', 'map competitor density across my bridge', 'what are the recurring themes in this bridge', 'plot buyers by <attribute>', 'show my sequences', 'what merge fields does this sequence use', 'which bridge columns feed this sequence', 'mark this row as <status>'. This is workspace data — for facts about a single institution use buyer-summary / document-research / buyer-attributes instead. Run buyer-identification only if the user pivots to a specific institution."
+description: "Navigate, read, and analyze the user's own Starbridge Bridges (saved tables of matches) — list them, inspect column definitions and rows, run analysis or visualization over the data, and update a single row's status."
+when_to_use: "Use when the request is about the user's OWN saved Bridges rather than one external institution. Example triggers — 'list my bridges', 'what's in my <X> bridge', 'analyze / visualize this bridge', 'map competitor density across my bridge', 'what are the recurring themes in this bridge', 'plot buyers by <attribute>', 'mark this row as <status>'. This is workspace data — for facts about a single institution use buyer-summary / document-research / buyer-attributes instead. Run buyer-identification only if the user pivots to a specific institution."
 ---
 
-# Bridges and Sequences
+# Bridges
 
-Operates over the user's own Starbridge **Bridges** (saved tables of matches the platform produced) and outreach **Sequences**. Use it to list and inspect these workspace objects, pull and analyze their rows, follow the link between a sequence and its source bridge columns, and update a single bridge row's status.
+Operates over the user's own Starbridge **Bridges** (saved tables of matches the platform produced). Use it to list and inspect bridges, pull and analyze their rows, and update a single bridge row's status.
 
 This is the user's workspace, not external buyer data. For questions about a specific institution (priorities, documents, contacts, scores) use `buyer-summary`, `document-research`, `contact-search`, or `buyer-attributes`.
 
 ## When to Use
-- Listing, opening, or explaining the user's bridges or sequences
+- Listing, opening, or explaining the user's bridges
 - Analysis or visualization over a bridge's rows (competitor density, theme analysis, plotting by an attribute)
-- Understanding which bridge columns feed a sequence and which merge fields a sequence exposes
 - Changing a single bridge row's status
 
 ## Tools
@@ -37,10 +36,6 @@ The data-bearing call. Each row carries a processing status (`NotProcessed`, `Qu
 ### `setBridgeRowStatus` (write — confirm first)
 The only mutating tool here. Sets one row's user-facing status (`newStatus`, a fixed enum: `New`, `Actioned`, `Saved`, `Attending`, `Sponsoring`, `Not Interested`). The `rowId` must belong to the given `bridgeId`. **Confirm the exact row and target status with the user before calling**, and read the tool's input schema for the current valid status values rather than hardcoding them.
 
-### Sequences: `listSequences` → `getSequence` → `getSequenceDataAttributes` → `listSourceBridgeColumnsForSequence`
-- `getSequenceDataAttributes` returns the sequence's data attributes / merge fields available for personalization.
-- `listSourceBridgeColumnsForSequence` maps those merge fields back to the source bridge's columns — this is the bridge↔sequence join. Use it when the user asks which bridge data feeds a sequence or which merge fields are available.
-
 ## Workflow
 
 **Inspecting a bridge**
@@ -53,17 +48,12 @@ The only mutating tool here. Sets one row's user-facing status (`newStatus`, a f
 2. Pull the relevant rows with `listBridgeRows` (narrow with filters; paginate ≤ 100/page).
 3. For more than ~a page of rows, write the rows to a file and aggregate / plot with a script — don't try to reason over hundreds of rows inline. This is where the MCP shines (e.g. competitor-density maps, theme rollups).
 
-**Inspecting a sequence**
-1. `listSequences` → `getSequence` for the target.
-2. `getSequenceDataAttributes` for available merge fields.
-3. `listSourceBridgeColumnsForSequence` to see which source bridge columns supply them.
-
 **Updating a row**
 1. Confirm the exact row and the intended status with the user.
 2. Call `setBridgeRowStatus`.
 
 ## Important
-- Bridges and sequences are the user's own workspace objects — don't conflate them with external buyer research (`buyer-summary`, `document-research`).
+- Bridges are the user's own workspace objects — don't conflate them with external buyer research (`buyer-summary`, `document-research`).
 - Always read `getBridgeColumnMetadata` before interpreting or filtering on a column; never invent a column's meaning.
 - `pageSize` max is 100. For large data, paginate or narrow with `filters`/`sorts`/`query` — never refuse a pull by assuming a lower limit.
 - `setBridgeRowStatus` mutates data: confirm first, and surface the valid status set from the tool schema.

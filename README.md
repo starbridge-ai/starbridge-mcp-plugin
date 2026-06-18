@@ -1,8 +1,7 @@
 # Starbridge for Claude Code
 
 Connect Claude Code to your Starbridge account and work with your buyer data by asking in plain
-language — research institutions, find contacts, draft outreach, and dig into your own bridges,
-sequences, and signals. No commands to memorize: just ask, and Claude picks the right Starbridge
+language — research institutions, find contacts, draft outreach, and dig into your own bridges and signals. No commands to memorize: just ask, and Claude picks the right Starbridge
 tools for you.
 
 ## Get started
@@ -50,10 +49,9 @@ Talk to it the way you'd brief a teammate. A few examples by what you're trying 
 - "What's new about Washoe County School District?"
 - "Give me my daily leads — what's new across the buyers I follow?"
 
-**Work with your own bridges & sequences**
+**Work with your own bridges**
 - "List my bridges."
 - "Analyze my competitor-presence bridge and show me where they're winning."
-- "What merge fields does this sequence use, and which bridge columns feed it?"
 
 Asking for a huge bulk job (e.g. "enrich every row in this list")? Claude will help you scope it
 down — narrow to a subset, run a sample first, or point you to the right tool — rather than grinding

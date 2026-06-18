@@ -3,7 +3,7 @@
   "name": "starbridge-mcp",
   "displayName": "Starbridge",
   "version": "1.2.0",
-  "description": "Connects Claude Code to the Starbridge dashboard over an OAuth MCP server, and bundles GTM skills for buyer identification, buyer attributes, buyer summaries, contact search, document research, outbound email, bridges & sequences, buyer signals, and bulk-request scoping.",
+  "description": "Connects Claude Code to the Starbridge dashboard over an OAuth MCP server, and bundles GTM skills for buyer identification, buyer attributes, buyer summaries, contact search, document research, outbound email, bridges, buyer signals, and bulk-request scoping.",
   "author": {
     "name": "Starbridge",
     "url": "https://starbridge.ai"
