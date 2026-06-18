@@ -47,6 +47,6 @@ To refresh them after upstream changes:
    (minor bump for new skills/features).
 3. Run `claude plugin validate .`.
 
-> `bridges-and-sequences`, `buyer-signals`, and `bulk-request-scoping` were authored here first and
+> `bridges`, `buyer-signals`, and `bulk-request-scoping` were authored here first and
 > should be upstreamed into `service.fastmcp` so the dashboard MCP (web / Cowork) serves them too —
 > until then they ship only to Claude Code.

@@ -41,7 +41,7 @@ Internal files (`researchBuyerFiles` + `viewFileContents`) are the authoritative
 5. Synthesize findings into a comprehensive answer
 
 ## Starting from an opportunityId
-If you already have an `opportunityId` (e.g. from a Bridge row in the `bridges-and-sequences` skill, or a buyer signal) you do NOT need `researchBuyerFiles` first. Call `viewFileContents` with that `opportunityId` to pull token-bounded excerpts of all files on the opportunity (use `getFileDownloadLinks` if you need the full unbounded file), or `getOpportunityLineItems` with the `opportunityId` for its purchase-order line items.
+If you already have an `opportunityId` (e.g. from a Bridge row in the `bridges` skill, or a buyer signal) you do NOT need `researchBuyerFiles` first. Call `viewFileContents` with that `opportunityId` to pull token-bounded excerpts of all files on the opportunity (use `getFileDownloadLinks` if you need the full unbounded file), or `getOpportunityLineItems` with the `opportunityId` for its purchase-order line items.
 
 ## If Initial Search Yields No Results
 Do NOT give up after one search attempt. Try:

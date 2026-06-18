@@ -26,7 +26,7 @@ It generates on demand when the cached summary is missing or stale, so the first
 3. Use the summary as the default grounding layer for strategy, buyer priorities, and outreach prep
 4. If the user needs underlying evidence, exact procurement details, or deeper verification — or the summary is unavailable (handle per the tool notes above) — activate `document-research`
 5. If the user wants drafted outreach, use the summary to shape the message before invoking an outbound email skill
-6. To verify or expand a specific point, take the `triggerId` from that section's `sources` (it is the bridge id), pass it as `bridgeId` to `listBridgeRows` and find the row whose `entryId` matches (see `bridges-and-sequences`); for the underlying source file, hand off to `document-research`
+6. To verify or expand a specific point, take the `triggerId` from that section's `sources` (it is the bridge id), pass it as `bridgeId` to `listBridgeRows` and find the row whose `entryId` matches (see `bridges`); for the underlying source file, hand off to `document-research`
 
 ## Important
 - Treat the summary as a synthesis of tracked activity and signals, not as permission to invent details beyond it
