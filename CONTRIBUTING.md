@@ -29,8 +29,8 @@ starbridge-mcp-plugin/
 ## MCP server
 
 The plugin points at `https://dashboard.starbridge.ai/mcp/oauth` (HTTP transport, OAuth 2.0). Claude
-Code handles dynamic client registration + PKCE against `https://auth.starbridge.ai` automatically.
-Run `/mcp` after connecting to see the live tool list.
+Code handles dynamic client registration + PKCE automatically. Run `/mcp` after connecting to see
+the live tool list.
 
 ## Skills
 
@@ -38,15 +38,9 @@ Skills are auto-invoked only (`user-invocable: false` in each `SKILL.md`), so th
 the `/` menu — Claude activates them based on the request. Each skill's `description` and
 `when_to_use` frontmatter drive that auto-invocation, so keep them sharp and non-overlapping.
 
-Most skills are mirrored from
-[`service.fastmcp`](https://github.com/starbridge-ai/service.fastmcp/tree/main/src/service_fastmcp/resources/skills).
-To refresh them after upstream changes:
+When adding or changing a skill:
 
-1. Re-copy `src/service_fastmcp/resources/skills/*/SKILL.md` into `skills/`.
+1. Edit the relevant `skills/<name>/SKILL.md` (one directory per skill).
 2. Bump the `version` in both `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`
-   (minor bump for new skills/features).
+   (minor bump for new skills or features, patch for fixes).
 3. Run `claude plugin validate .`.
-
-> `bridges`, `buyer-signals`, and `bulk-request-scoping` were authored here first and
-> should be upstreamed into `service.fastmcp` so the dashboard MCP (web / Cowork) serves them too —
-> until then they ship only to Claude Code.
