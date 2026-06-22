@@ -30,29 +30,31 @@ Buyer-scoped public web search. Use only when verified contacts are unavailable 
 ## Workflow
 1. Ensure the buyer has been identified first via `buyer-identification`
 2. Search using `searchBuyerContacts` with at least one canonical job title in `include` (the tool requires a non-empty `include`); if no role was named, infer likely titles or ask first
-3. Present contacts using the structured output format below
+3. Present contacts using the **Output Format** below (a readable table)
 4. If a contact the user wants is locked, follow the `unlockBuyerContact` confirmation flow above before unlocking — never unlock without explicit user confirmation
 5. If the `contacts` list is empty, surface the response's role-aware next-step suggestions; do not silently report nothing. Only then, ask before using `runBuyerWebResearch`:
    > "I didn't find verified contacts for this role. Would you like me to search public web sources? Note that web results may be less reliable."
 
 ## Output Format
-- When showing contacts, output them inside a fenced markdown block whose info string is exactly `block:contacts`
-- The contents of the block must be a JSON array
-- Each contact object must include exactly these fields: `firstName`, `lastName`, `middleName`, `salutation`, `title`, `email`, `phone`, `isVerified`
-- Use `null` for missing values instead of omitting fields
-- Do not include a `name` field in the output block
-- The `block:contacts` block is the canonical contact payload for the frontend modal
-- Contacts must only be shown inside `block:contacts`, never repeated outside the block as free text, bullets, headings, summaries, or card-style rows
-- You may include a brief natural-language introduction or follow-up, but it must not mention any specific contact details outside the block
+
+Present contacts as a readable Markdown table so they're easy to scan — one row per contact, with columns **Name**, **Title**, **Department**, **Email**, **Phone**, and **Verified**.
+
+- Use the contact's full name (include salutation and middle name when available).
+- Show `—` for any missing value rather than leaving a cell blank.
+- In the **Verified** column, mark Starbridge-verified contacts `✓ Verified` and web-sourced contacts `Unverified (web)`.
+- For a locked contact, show `🔒 locked` in the Email and Phone cells and follow the `unlockBuyerContact` confirmation flow before revealing details.
+- Lead in with a short sentence (who you found, for which roles), and add a brief follow-up after the table if useful. Don't fabricate or pad missing fields.
 
 Example:
-```block:contacts
-[{"firstName":"Emily","lastName":"Johnson","middleName":"Claire","salutation":"Ms.","title":"Director of Institutional Research","email":"emily.johnson@hccc.edu","phone":"+1-201-555-0142","isVerified":true},{"firstName":"Michael","lastName":"Rivera","middleName":"Luis","salutation":null,"title":"Associate Vice President of Academic Affairs","email":"michael.rivera@hccc.edu","phone":null,"isVerified":false}]
-```
+
+| Name | Title | Department | Email | Phone | Verified |
+|------|-------|------------|-------|-------|----------|
+| Ms. Emily Johnson | Director of Institutional Research | Institutional Research | emily.johnson@example.edu | +1-201-555-0142 | ✓ Verified |
+| Michael Rivera | Associate Vice President of Academic Affairs | Academic Affairs | michael.rivera@example.edu | — | Unverified (web) |
 
 ## Verified vs. Unverified Contacts
-- **Starbridge-verified contacts**: From `searchBuyerContacts`. Reliable and up-to-date. Set `isVerified` to `true` in the output block.
-- **Web contacts**: From `runBuyerWebResearch`. May be outdated or inaccurate. Use the same `block:contacts` format and set `isVerified` to `false`.
+- **Starbridge-verified contacts**: From `searchBuyerContacts`. Reliable and up-to-date. Mark them `✓ Verified` in the table.
+- **Web contacts**: From `runBuyerWebResearch`. May be outdated or inaccurate. Mark them `Unverified (web)` in the table.
 
 ## Important
 - Never fabricate or guess contact information
