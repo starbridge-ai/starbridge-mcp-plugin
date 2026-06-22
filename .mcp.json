@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "starbridge": {
+      "type": "http",
+      "url": "https://dashboard.starbridge.ai/mcp/oauth"
+    }
+  }
+}
