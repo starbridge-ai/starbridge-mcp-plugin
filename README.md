@@ -22,6 +22,15 @@ tools for you.
 Pick **starbridge** and log in when the browser opens. That's it — you're connected. If your session
 ever expires, run `/mcp` again and reconnect.
 
+## Updating the plugin
+
+Due to an onging bug with [claude cowork](https://github.com/anthropics/claude-code/issues/36317) we suggest the following shell command to update the Starbridge MCP
+```code
+git -C ~/.claude/plugins/marketplaces/starbridge pull origin main && claude plugin update starbridge-mcp@starbridge
+```
+
+Restart claude cowork after and it should be updated with the latest version
+
 ## What you can ask
 
 Talk to it the way you'd brief a teammate. A few examples by what you're trying to do:
