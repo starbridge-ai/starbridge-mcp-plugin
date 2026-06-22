@@ -9,7 +9,7 @@ tools for you.
 **1. Install** (run these in Claude Code):
 
 ```text
-/plugin marketplace add starbridge-ai/starbridge-mcp-plugin
+/plugin marketplace add starbridge-ai/plugin.mcp
 /plugin install starbridge-mcp@starbridge
 ```
 
